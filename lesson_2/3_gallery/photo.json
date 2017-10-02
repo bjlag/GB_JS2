@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "src_small": "./img/01_small.jpeg",
+        "src_big": "./img/01_big.jpeg",
+        "title": "Фото 1"
+    },
+    {
+        "id": 2,
+        "src_small": "./img/02_small.jpeg",
+        "src_big": "./img/02_big.jpeg",
+        "title": "Фото 2"
+    },
+    {
+        "id": 3,
+        "src_small": "./img/03_small.jpeg",
+        "src_big": "./img/03_big.jpeg",
+        "title": "Фото 3"
+    },
+    {
+        "id": 4,
+        "src_small": "./img/04_small.jpeg",
+        "src_big": "./img/04_big.jpeg",
+        "title": "Фото 4"
+    },
+    {
+        "id": 5,
+        "src_small": "./img/05_small.jpeg",
+        "src_big": "./img/05_big.jpeg",
+        "title": "Фото 5"
+    }
+]

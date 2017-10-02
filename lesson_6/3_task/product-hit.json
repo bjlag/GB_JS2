@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Товар 1",
+        "price": 5000,
+        "currency": "руб.",
+        "img": "img/i_1.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Товар 2",
+        "price": 3900,
+        "currency": "руб.",
+        "img": "img/i_2.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Товар 3",
+        "price": 8700,
+        "currency": "руб.",
+        "img": "img/i_3.jpg"
+    },
+    {
+        "id": 4,
+        "name": "Товар 4",
+        "price": 4500,
+        "currency": "руб.",
+        "img": "img/i_4.jpg"
+    }
+]

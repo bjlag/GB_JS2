@@ -1,0 +1,65 @@
+[
+    {
+        "href": "/",
+        "title": "Главная",
+        "classList": "menu-top__items",
+        "classLink": "menu-top__link"
+    },
+    {
+        "href": "/catalog/",
+        "title": "Каталог",
+        "classMenu": "menu-top__submenu",
+        "classList": "menu-top__items",
+        "classLink": "menu-top__link",
+        "submenu": [
+            {
+                "href": "/catalog/1/",
+                "title": "Куртки",
+                "classList": "menu-top__submenu-item",
+                "classLink": "menu-top__submenu-link"
+            },
+            {
+                "href": "/catalog/2/",
+                "title": "Обувь",
+                "classList": "menu-top__submenu-item",
+                "classLink": "menu-top__submenu-link"
+            },
+            {
+                "href": "/catalog/3/",
+                "title": "Брюки",
+                "classList": "menu-top__submenu-item",
+                "classLink": "menu-top__submenu-link"
+            },
+            {
+                "href": "/catalog/4/",
+                "title": "Футболки",
+                "classList": "menu-top__submenu-item",
+                "classLink": "menu-top__submenu-link"
+            }
+        ]
+    },
+    {
+        "href": "/delivery/",
+        "title": "Доставка",
+        "classList": "menu-top__items",
+        "classLink": "menu-top__link"
+    },
+    {
+        "href": "/payment/",
+        "title": "Оплата",
+        "classList": "menu-top__items",
+        "classLink": "menu-top__link"
+    },
+    {
+        "href": "/cart/",
+        "title": "Корзина",
+        "classList": "menu-top__items",
+        "classLink": "menu-top__link"
+    },
+    {
+        "href": "/contacts/",
+        "title": "Контакты",
+        "classList": "menu-top__items",
+        "classLink": "menu-top__link"
+    }
+]

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    var jsonOne = './answer_1.json',
+        jsonTwo = './answer_2.json';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open( 'GET', jsonOne );
+    xhr.send();
+
+    xhr.onreadystatechange = function () {
+        if ( xhr.readyState !== 4 ) return false;
+
+        if ( xhr.status !== 200 ) {
+            console.log( 'Error:', xhr.status, xhr.statusText );
+        } else {
+            var jsonAnswer = JSON.parse( xhr.responseText );
+
+            if ( jsonAnswer.result === 'error' ) {
+                console.log( 'Ошибка' );
+            } else if ( jsonAnswer.result === 'success' ) {
+                console.log( 'Готово' );
+            } else {
+                console.log( 'Неизвестный ответ' );
+            }
+        }
+    };
+
+</script>
+</body>
+</html>

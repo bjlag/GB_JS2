@@ -1,0 +1,84 @@
+[
+    {
+        "href": "/",
+        "title": "Главная"
+    },
+    {
+        "href": "/about/",
+        "title": "О нас",
+        "submenu": [
+            {
+                "href": "/about/details/",
+                "title": "Реквизиты"
+            },
+            {
+                "href": "/about/news/",
+                "title": "Новости компании"
+            },
+            {
+                "href": "/about/career/",
+                "title": "Вакансии"
+            }
+        ]
+    },
+    {
+        "href": "/services/",
+        "title": "Услуги",
+        "submenu": [
+            {
+                "href": "/services/services-1/",
+                "title": "Услуга 1",
+                "submenu": [
+                    {
+                        "href": "/services/services-1/",
+                        "title": "Услуга 1.1"
+                    },
+                    {
+                        "href": "/services/services-1/",
+                        "title": "Услуга 1.2"
+                    }
+                ]
+            },
+            {
+                "href": "/services/services-2/",
+                "title": "Услуга 2",
+                "submenu": [
+                    {
+                        "href": "/services/services-1/",
+                        "title": "Услуга 2.1"
+                    },
+                    {
+                        "href": "/services/services-1/",
+                        "title": "Услуга 2.2",
+                        "submenu": [
+                            {
+                                "href": "/services/services-1/",
+                                "title": "Услуга 2.2.1"
+                            },
+                            {
+                                "href": "/services/services-1/",
+                                "title": "Услуга 2.2.2"
+                            },
+                            {
+                                "href": "/services/services-1/",
+                                "title": "Услуга 2.2.3"
+                            },
+                            {
+                                "href": "/services/services-1/",
+                                "title": "Услуга 2.2.4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "href": "/services/services-3/",
+                "title": "Услуга 3"
+            }
+        ]
+    },
+    {
+        "href": "/contacts/",
+        "title": "Контакты"
+    }
+]

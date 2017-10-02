@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Меню (ES5)</title>
+</head>
+<body>
+<div id="menu"></div>
+<script src="script.js"></script>
+<script>
+    /**
+     * Выводим меню
+     */
+    window.onload = function () {
+        const menuTop = new Menu( 'menu__top', 'menu__top', [
+            new MenuItem( '/', 'Главная' ),
+            new MenuItem( '/about/', 'О нас' ),
+            new SubMenu( '/services/', 'Услуги', [
+                new MenuItem( '/services/service-1', 'Услуги 1' ),
+                new SubMenu( '/services/service-3', 'Услуги 3', [
+                    new MenuItem( '/services/service-1', 'Услуги 4' ),
+                    new MenuItem( '/services/service-2', 'Услуги 5' )
+                ] ),
+                new MenuItem( '/services/service-2', 'Услуги 2' )
+            ] ),
+            new MenuItem( '/contacts/', 'Контакты' )
+        ] );
+
+        document.getElementById( 'menu' ).innerHTML = menuTop.render();
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Меню (ES5)</title>
+    <script>
+        'use strict';
+
+        /**
+         * Класс Container
+         */
+        function Container( id ) {
+            if ( id !== undefined ) {
+                this.id = id;
+            }
+            this.htmlCode = '';
+        }
+
+        Container.prototype.render = function () {
+            return this.htmlCode;
+        };
+
+        Container.prototype.remove = function () {
+            document.getElementById( this.id ).outerHTML = '';
+        };
+
+        /**
+         * Класс Menu
+         */
+        function Menu( id, className, items ) {
+            Container.call( this, id ); // наследование свойств класса Container
+
+            this.className = className;
+            this.items = items;
+        }
+
+        // Наследование методов класса Container
+        Menu.prototype = Object.create( Container.prototype );
+        Menu.prototype.constructor = Menu; // Возвращаем конструктор, т.к. выше он был затерт
+
+        Menu.prototype.render = function () {
+            var result = '<ul class="' + this.className + '" id="' + this.id + '">';
+            for ( var i = 0; i < this.items.length; i++ ) {
+                // Проверяем принадлежит ли элемент массива классу MenuItem
+                if ( this.items[ i ] instanceof MenuItem ) {
+                    result += this.items[ i ].render();
+                }
+            }
+            result += '</ul>';
+
+            return result;
+        };
+
+        /**
+         * Класс MenuItem
+         */
+        function MenuItem( href, title ) {
+            Container.call( this );
+
+            this.href = href;
+            this.title = title;
+        }
+
+        MenuItem.prototype = Object.create( Container.prototype );
+        MenuItem.prototype.constructor = MenuItem;
+
+        MenuItem.prototype.render = function () {
+            return '<li><a href="' + this.href + '">' + this.title + '</a></li>';
+        };
+
+        /**
+         * Выводим меню
+         */
+        window.onload = function () {
+            const menuTop = new Menu( 'menu__top', 'menu__top', [
+                new MenuItem( '/', 'Главная', '' ),
+                new MenuItem( '/about/', 'О нас' ),
+                new MenuItem( '/contacts/', 'Контакты' )
+            ] );
+
+            document.getElementById( 'menu' ).innerHTML = menuTop.render();
+//            menuTop.remove();
+        }
+
+    </script>
+</head>
+<body>
+<div id="menu"></div>
+</body>
+</html>

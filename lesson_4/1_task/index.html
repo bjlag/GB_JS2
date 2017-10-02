@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Задание №1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="tab">
+    <ul class="tab__items-list clearfix">
+        <li data-tab-id="1" class="tab__item tab__item--active">Таб 1</li>
+        <li data-tab-id="2" class="tab__item">Таб 2</li>
+        <li data-tab-id="3" class="tab__item">Таб 3</li>
+        <li data-tab-id="4" class="tab__item">Таб 4</li>
+    </ul>
+    <div id="1" class="tab__item-content tab__item-content--active">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem commodi, ducimus eligendi est facilis fugiat
+        harum illum, impedit, ipsam iste natus neque nihil non quae rerum sequi soluta voluptatibus voluptatum.
+    </div>
+    <div id="2" class="tab__item-content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi cumque deserunt eum incidunt minus quas
+            quisquam veritatis voluptatum! Atque debitis deserunt et facilis iste magni quos sapiente! Culpa,
+            exercitationem, laborum.
+        </p>
+        <p>Architecto dolorem, ducimus eos fugit ipsam numquam veniam. Dolorum ipsa itaque laborum quis! A ab
+            consequatur deserunt exercitationem molestiae nemo quibusdam totam? Animi enim inventore veritatis
+            voluptates. Ad nemo, quae?
+        </p>
+    </div>
+    <div id="3" class="tab__item-content">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta enim error esse maxime necessitatibus nemo
+        perspiciatis sapiente sequi ullam vitae! Atque deleniti incidunt quibusdam voluptatem? Ipsum nemo porro repellat
+        repudiandae. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, aut beatae, cum dicta
+        distinctio dolores eaque id magni molestias neque reprehenderit veritatis? Ab magni officiis rem, tempore ullam
+        voluptates voluptatibus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet at beatae dignissimos
+        fugit, illum nemo odit officiis repudiandae temporibus? Aliquid debitis delectus distinctio, error et maiores
+        maxime omnis rem ullam.
+    </div>
+    <div id="4" class="tab__item-content">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur dicta, hic illo ipsam iure
+        laudantium maxime minima nam porro suscipit vel! Deleniti explicabo illo libero non odio! Minus, molestiae.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem reprehenderit veniam voluptatibus! Atque
+        delectus deserunt incidunt nam praesentium ut voluptatum. Dignissimos ea facilis ipsum laudantium omnis placeat
+        quibusdam repellendus rerum!
+    </div>
+</div>
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+    $( document ).ready( function () {
+        $( 'li.tab__item' ).on( 'click', function () {
+            $( 'li.tab__item' ).removeClass( 'tab__item--active' );
+            $( this ).addClass( 'tab__item--active' );
+
+            var idTab = $( this ).attr( 'data-tab-id' );
+            $( 'div.tab__item-content' ).removeClass( 'tab__item-content--active' );
+            $( '#' + idTab).addClass( 'tab__item-content--active' );
+        } );
+    } );
+</script>
+</body>
+</html>

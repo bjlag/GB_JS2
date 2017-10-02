@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Задание №3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<form id="form" action="">
+    <div class="input-group">
+        <label for="name">Ваше имя</label>
+        <div id="error-name" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="name" name="name" placeholder="Ваше имя">
+    </div>
+    <div class="input-group">
+        <label for="phone">Телефон</label>
+        <div id="error-phone" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="phone" name="phone" placeholder="Телефон в формате +7(000)000-0000">
+    </div>
+    <div class="input-group">
+        <label for="email">Email</label>
+        <div id="error-email" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="email" name="email" placeholder="Email">
+    </div>
+    <div class="input-group">
+        <label for="city">Город</label>
+        <div id="error-city" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="city" name="city" placeholder="Город">
+        <div id="find-city" class="find-city find-city--hidden">
+            <ul class="find-city__list"></ul>
+        </div>
+    </div>
+    <div class="input-group">
+        <label for="message">Сообщение</label>
+        <div id="error-message" class="error-msg error-msg--hidden"></div>
+        <textarea id="message" name="message" placeholder="Сообщение"></textarea>
+    </div>
+
+    <button type="button" id="submit">Отправить</button>
+</form>
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/jqu"></script>
+<script>
+    'use strict';
+
+    $( document ).ready( function () {
+        var fieldValidation = {
+                'name': {
+                    'validationRule': /^[a-zа-я]+$/i, // только буквы
+                    'errorMsg': 'Имя должно содержать только буквы'
+                },
+                'phone': {
+                    'validationRule': /^\+7\(\d{3}\)\d{3}-\d{4}$/, // +7(000)000-0000
+                    'errorMsg': 'Укажите телефон в формате +7(000)000-0000'
+                },
+                'email': {
+                    'validationRule': /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i, // только email
+                    'errorMsg': 'Вы уверены, что указали email?'
+                },
+                'city': {
+                    'validationRule': /^[a-zа-я\s-]+$/i, // только буквы, - и пробел
+                    'errorMsg': 'Укажите ваш город!'
+                },
+                'message': {
+                    'validationRule': /.+/, // любой текст
+                    'errorMsg': 'Напишите что-нибудь'
+                }
+            },
+            blockFindCity = $( '#find-city' ),
+            arCity = [];
+
+        // получаем список городов с сервера
+        $.ajax( {
+            url: './city.json',
+            dataType: 'json',
+            type: 'get',
+            success: function ( data ) {
+                if ( data.result === 'success' ) {
+                    arCity = data.message;
+                }
+            }
+        } );
+
+        // отлеживаем нажатие клавиш в input city
+        $( '#city' ).on( 'keyup', function () {
+            var cityInputValue = $( this ).val();
+
+            if ( cityInputValue.length < 3 ) {
+                blockFindCity.addClass( 'find-city--hidden' );
+                return;
+            }
+
+            // получаем массив найденных городов
+            var arFindCity = arCity.filter( function ( item ) {
+                var regExp = new RegExp( cityInputValue, 'ig' );
+                return regExp.test( item );
+            } );
+
+            // выводим найденные города
+            if ( arFindCity.length > 0 ) {
+                blockFindCity.removeClass( 'find-city--hidden' );
+                blockFindCity.find( '.find-city__list' ).html( '' ); // перед тем как заполнить, удаляем все li
+
+                for ( var i = 0; i < arFindCity.length; i++ ) {
+                    blockFindCity.find( '.find-city__list' )
+                        .append( $( '<li class="find-city__item">' + arFindCity[ i ] + '</li>' ) );
+                }
+
+                // вешаем событие click на элементы списка найденных городов
+                blockFindCity.find( 'li.find-city__item' ).on( 'click', function () {
+                    $( '#city' ).val( $( this ).text() );
+                    blockFindCity.addClass( 'find-city--hidden' );
+                } );
+            } else {
+                blockFindCity.addClass( 'find-city--hidden' );
+            }
+        } );
+
+        // отправка формы
+        $( '#submit' ).on( 'click', function () {
+
+            for ( var key in fieldValidation ) {
+                var field = $( '#' + key ),
+                    errorBox = $( '#error-' + key ),
+                    errorMsg = fieldValidation[ key ].errorMsg,
+                    isFieldValid = fieldValidation[ key ].validationRule.test( field.val() );
+
+                if ( field.val().length === 0 ) {
+                    errorMsg = "Обязательное поле";
+                }
+
+                if ( !isFieldValid ) {
+                    field.addClass( 'error-field' );
+                    field.removeClass( 'success-field' );
+                    errorBox.removeClass( 'error-msg--hidden' );
+                    errorBox.html( errorMsg );
+                } else {
+                    field.removeClass( 'error-field' );
+                    field.addClass( 'success-field' );
+                    errorBox.addClass( 'error-msg--hidden' );
+                    errorBox.html( '' );
+                }
+            }
+        } );
+    } );
+</script>
+</body>
+</html>

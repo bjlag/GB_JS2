@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Задание №2</title>
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/all.css">
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<form id="form" action="">
+    <div class="input-group">
+        <label for="name">Ваше имя</label>
+        <div id="error-name" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="name" name="name" placeholder="Ваше имя">
+    </div>
+    <div class="input-group">
+        <label for="phone">Телефон</label>
+        <div id="error-phone" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="phone" name="phone" placeholder="Телефон в формате +7(000)000-0000">
+    </div>
+    <div class="input-group">
+        <label for="email">Email</label>
+        <div id="error-email" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="email" name="email" placeholder="Email">
+    </div>
+    <div class="input-group">
+        <label for="city">Город</label>
+        <div id="error-city" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="city" name="city" placeholder="Город">
+        <div id="find-city" class="find-city find-city--hidden">
+            <ul class="find-city__list"></ul>
+        </div>
+    </div>
+    <div class="input-group">
+        <label for="birthday">Дата рождения</label>
+        <div id="error-birthday" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="birthday" name="birthday" placeholder="Дата рождения">
+    </div>
+    <div class="input-group">
+        <label for="message">Сообщение</label>
+        <div id="error-message" class="error-msg error-msg--hidden"></div>
+        <textarea id="message" name="message" placeholder="Сообщение"></textarea>
+    </div>
+
+    <button type="button" id="submit">Отправить</button>
+</form>
+
+<div id="dialogError"></div>
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script>
+    'use strict';
+
+    $( document ).ready( function () {
+        var fieldValidation = {
+                'name': {
+                    'name': 'Ваше имя',
+                    'validationRule': /^[a-zа-я]+$/i, // только буквы
+                    'errorMsg': 'Имя должно содержать только буквы',
+                    "isValid": false
+                },
+                'phone': {
+                    'name': 'Телефон',
+                    'validationRule': /^\+7\(\d{3}\)\d{3}-\d{4}$/, // +7(000)000-0000
+                    'errorMsg': 'Укажите телефон в формате +7(000)000-0000',
+                    "isValid": false
+                },
+                'email': {
+                    'name': 'Email',
+                    'validationRule': /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i, // только email
+                    'errorMsg': 'Вы уверены, что указали email?',
+                    "isValid": false
+                },
+                'city': {
+                    'name': 'Город',
+                    'validationRule': /^[a-zа-я\s-]+$/i, // только буквы, - и пробел
+                    'errorMsg': 'Укажите ваш город!',
+                    "isValid": false
+                },
+                'birthday': {
+                    'name': 'Дата рождения',
+                    'validationRule': /^\d{2}.\d{2}.\d{4}$/, // любой текст
+                    'errorMsg': 'Укажите дату в формате дд.мм.гггг',
+                    "isValid": false
+                },
+                'message': {
+                    'name': 'Сообщение',
+                    'validationRule': /.+/, // любой текст
+                    'errorMsg': 'Напишите что-нибудь',
+                    "isValid": false
+                }
+            },
+            blockFindCity = $( '#find-city' ),
+            arCity = [];
+
+        // получаем список городов с сервера
+        $.ajax( {
+            url: './city.json',
+            dataType: 'json',
+            type: 'get',
+            success: function ( data ) {
+                if ( data.result === 'success' ) {
+                    arCity = data.message;
+                }
+            }
+        } );
+
+        // настраиваем виждет для поля дня рождения
+        $( '#birthday' ).datepicker( {
+            dateFormat: 'dd.mm.yy',
+            firstDay: 1,
+            nextText: 'Следующий месяц',
+            prevText: 'Предыдущий месяц',
+            showButtonPanel: true,
+            currentText: 'Сегодня',
+            closeText: 'Закрыть',
+            showAnim: 'slideDown',
+            monthNames: [ 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь' ],
+            dayNamesMin: [ 'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб' ]
+        } );
+
+        // отлеживаем нажатие клавиш в input city
+        $( '#city' ).on( 'keyup', function () {
+            var cityInputValue = $( this ).val();
+
+            if ( cityInputValue.length < 3 ) {
+                blockFindCity.addClass( 'find-city--hidden' );
+                return;
+            }
+
+            // получаем массив найденных городов
+            var arFindCity = arCity.filter( function ( item ) {
+                var regExp = new RegExp( cityInputValue, 'ig' );
+                return regExp.test( item );
+            } );
+
+            // выводим найденные города
+            if ( arFindCity.length > 0 ) {
+                blockFindCity.removeClass( 'find-city--hidden' );
+                blockFindCity.find( '.find-city__list' ).html( '' ); // перед тем как заполнить, удаляем все li
+
+                for ( var i = 0; i < arFindCity.length; i++ ) {
+                    blockFindCity.find( '.find-city__list' )
+                        .append( $( '<li class="find-city__item">' + arFindCity[ i ] + '</li>' ) );
+                }
+
+                // вешаем событие click на элементы списка найденных городов
+                blockFindCity.find( 'li.find-city__item' ).on( 'click', function () {
+                    $( '#city' ).val( $( this ).text() );
+                    blockFindCity.addClass( 'find-city--hidden' );
+                } );
+            } else {
+                blockFindCity.addClass( 'find-city--hidden' );
+            }
+        } );
+
+        // отправка формы
+        $( '#submit' ).on( 'click', function () {
+            var key;
+
+            for ( key in fieldValidation ) {
+                var field = $( '#' + key ),
+                    errorBox = $( '#error-' + key ),
+                    errorMsg = fieldValidation[ key ].errorMsg,
+                    isFieldValid = fieldValidation[ key ].validationRule.test( field.val() );
+
+                if ( field.val().length === 0 ) {
+                    errorMsg = "Обязательное поле";
+                }
+
+                if ( !isFieldValid ) {
+                    fieldValidation[ key ].isValid = false;
+
+                    field.animate( {
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                        borderColor: '#cb293c'
+                    } );
+                    errorBox.text( errorMsg );
+                    errorBox.show( 'fade', 500 );
+                } else {
+                    fieldValidation[ key ].isValid = true;
+
+                    field.animate( {
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                        borderColor: '#139213'
+                    } );
+                    errorBox.hide( 'fade', 500 );
+                }
+            }
+
+            // вывод ошибки в диалоге
+            var errorMsgForDialog = '',
+                selectorDialogError = $( '#dialogError' );
+
+            for ( key in fieldValidation ) {
+                if ( fieldValidation[ key ].isValid ) continue;
+
+                errorMsgForDialog += 'Поле: <b>' + fieldValidation[ key ].name + '</b> - ' + fieldValidation[ key ].errorMsg + '<br>';
+            }
+
+            selectorDialogError.dialog( {
+                autoOpen: false,
+                width: '620px',
+                modal: true,
+                show: { effect: 'bounce', duration: 500 },
+                hide: { effect: 'fade', duration: 500 },
+                closeText: "Закрыть",
+                buttons: [
+                    {
+                        text: "OK",
+                        click: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                ]
+            } );
+
+            if ( errorMsgForDialog.length > 0 ) {
+                selectorDialogError.dialog( {
+                    title: 'Ошибка заполнения формы'
+                } );
+            } else {
+                selectorDialogError.dialog( {
+                    title: 'Сообщение отравлено'
+                } );
+                errorMsgForDialog = 'Спасибо! Информация получена.';
+            }
+
+            selectorDialogError.html( errorMsgForDialog );
+            selectorDialogError.dialog( 'open' );
+        } );
+    } );
+</script>
+</body>
+</html>

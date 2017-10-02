@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Стоимость и калорийность гамбургера</title>
+    <script>
+        'use strict';
+
+        /**
+         * Класс, объекты которого описывают параметры гамбургера.
+         *
+         * @constructor
+         * @param size        Размер
+         * @param stuffing    Начинка
+         * @throws {HamburgerException}  При неправильном использовании
+         */
+        function Hamburger( size, stuffing ) {
+            this.size = size;
+            this.stuffing = stuffing;
+            this.topping = [];
+
+            if ( arguments[ 2 ] !== undefined ) {
+                this.topping.push( arguments[ 2 ] );
+            }
+        }
+
+        function getObjStuffing( name, price, calories ) {
+            return {
+                name: name,
+                price: price,
+                calories: calories
+            }
+        }
+
+        /* Размеры, виды начинок и добавок */
+        Hamburger.SIZE_SMALL = getObjStuffing( 'size_small', 50, 20 );
+        Hamburger.SIZE_LARGE = getObjStuffing( 'size_large', 100, 40 );
+        Hamburger.STUFFING_CHEESE = getObjStuffing( 'stuffing_cheese', 10, 20 );
+        Hamburger.STUFFING_SALAD = getObjStuffing( 'stuffing_salad', 20, 5 );
+        Hamburger.STUFFING_POTATO = getObjStuffing( 'stuffing_potato', 15, 10 );
+        Hamburger.TOPPING_MAYO = getObjStuffing( 'topping_mayo', 15, 0 );
+        Hamburger.TOPPING_SPICE = getObjStuffing( 'topping_spice', 20, 5 );
+
+        /**
+         * Добавить добавку к гамбургеру. Можно добавить несколько
+         * добавок, при условии, что они разные.
+         *
+         * @param topping     Тип добавки
+         * @throws {HamburgerException}  При неправильном использовании
+         */
+        Hamburger.prototype.addTopping = function ( topping ) {
+            if ( this.topping.length > 0 ) {
+                var inTopping = false;
+                for ( var i = 0; i < this.topping.length; i++ ) {
+                    if ( this.topping[ i ].name === topping.name ) {
+                        inTopping = true;
+                    }
+                }
+            }
+
+            if ( !inTopping || !this.topping.length ) {
+                this.topping.push( topping );
+            }
+        };
+
+        /**
+         * Убрать добавку, при условии, что она ранее была
+         * добавлена.
+         *
+         * @param topping   Тип добавки
+         * @throws {HamburgerException}  При неправильном использовании
+         */
+        Hamburger.prototype.removeTopping = function ( topping ) {
+            if ( this.topping.length > 0 ) {
+                for ( var i = 0; i < this.topping.length; i++ ) {
+                    if ( this.topping[ i ].name === topping.name ) {
+                        this.topping.splice( i, 1 );
+                        break;
+                    }
+                }
+            }
+        };
+
+        /**
+         * Получить список добавок.
+         *
+         * @return {Array} Массив добавленных добавок, содержит константы
+         *                 Hamburger.TOPPING_*
+         */
+        Hamburger.prototype.getToppings = function () {
+            return this.topping;
+        };
+
+        /**
+         * Узнать размер гамбургера
+         */
+        Hamburger.prototype.getSize = function () {
+            return this.size;
+        };
+
+        /**
+         * Узнать начинку гамбургера
+         */
+        Hamburger.prototype.getStuffing = function () {
+            return this.stuffing;
+        };
+
+        /**
+         * Узнать цену гамбургера
+         * @return {Number} Цена в тугриках
+         */
+        Hamburger.prototype.calculatePrice = function () {
+            var size = this.getSize(),
+                stuffing = this.getStuffing(),
+                topping = this.getToppings(),
+                totalPrice = 0;
+
+            totalPrice = size.price;
+            totalPrice += stuffing.price;
+
+            for ( var i = 0; i < topping.length; i++ ) {
+                totalPrice += topping[ i ].price;
+            }
+
+            return totalPrice;
+        };
+
+        /**
+         * Узнать калорийность
+         * @return {Number} Калорийность в калориях
+         */
+        Hamburger.prototype.calculateCalories = function () {
+            var size = this.getSize(),
+                stuffing = this.getStuffing(),
+                topping = this.getToppings(),
+                totalCalories = 0;
+
+            totalCalories = size.calories;
+            totalCalories += stuffing.calories;
+
+            for ( var i = 0; i < topping.length; i++ ) {
+                totalCalories += topping[ i ].calories;
+            }
+
+            return totalCalories;
+        };
+
+        /**
+         * Представляет информацию об ошибке в ходе работы с гамбургером.
+         * Подробности хранятся в свойстве message.
+         * @constructor
+         */
+        function HamburgerException() {
+
+        }
+
+        const hamburger1 = new Hamburger( Hamburger.SIZE_LARGE, Hamburger.STUFFING_SALAD );
+
+        hamburger1.addTopping( Hamburger.TOPPING_MAYO );
+        hamburger1.addTopping( Hamburger.TOPPING_MAYO );
+        hamburger1.addTopping( Hamburger.TOPPING_SPICE );
+
+        hamburger1.removeTopping( Hamburger.TOPPING_MAYO );
+
+        console.log( 'Цена гамбургера: ' + hamburger1.calculatePrice() + ' руб.' );
+        console.log( 'Калорийность гамбургера: ' + hamburger1.calculateCalories() );
+
+//        console.log( hamburger1 );
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Галерия</title>
+</head>
+<body>
+<div id="gallery" class="gallery">
+</div>
+
+<script>
+    'use strict';
+
+    /**
+     * Класс отвечающий за работу с галереей
+     *
+     * @constructor
+     */
+    function Gallery() {
+        var src = '',
+            container,
+            items = [],
+            idActiveItem;
+
+        var SELECTOR_SMALL_DOT = '.gallery__items img',
+            SELECTOR_BIG = 'gallery__big',
+            SELECTOR_BIG_DOT = '.gallery__big',
+            SELECTOR_ITEM_ACTIVE = 'gallery__items--active';
+
+        /**
+         *  Получение данных JSON
+         */
+        Gallery.prototype.getData = function () {
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData();
+
+            xhr.open( 'POST', src, true );
+            xhr.setRequestHeader( 'Content-type', 'application/json; charset=utf-8' );
+            xhr.send( formData );
+
+            xhr.onreadystatechange = function () {
+                if ( xhr.readyState !== 4 ) return false;
+
+                if ( xhr.status !== 200 ) {
+                    console.log( 'Error:', xhr.status, xhr.statusText );
+                } else {
+                    var arJson = JSON.parse( xhr.responseText );
+                    for ( var i = 0; i < arJson.length; i++ ) {
+                        items.push( arJson[ i ] );
+                    }
+                }
+            };
+        };
+
+        /**
+         * Установить ресурс откуда будут браться данные JSON
+         *
+         * @param source - {string} путь до файла JSON
+         * @returns {boolean} true в случае если указан правильный путь, false иначе
+         */
+        Gallery.prototype.setSource = function ( source ) {
+            if ( source !== undefined && source.length > 0 ) {
+                src = source;
+                return true;
+            } else {
+                console.log( 'Указан неверный путь к данным' );
+                return false;
+            }
+        };
+
+        /**
+         * Установить контейнер в DOM моделе документа, в котором будет выводиться галерея
+         * @param id - ID блока в DOM
+         */
+        Gallery.prototype.setContainer = function ( id ) {
+            container = document.getElementById( id );
+        };
+
+        /**
+         * Метод выводит галерею
+         */
+        Gallery.prototype.showGallery = function () {
+            var result = '<div class="' + SELECTOR_BIG + '"></div>';
+
+            result += '<div class="gallery__item-wrapper clearfix">';
+            for ( var i = 0; i < items.length; i++ ) {
+                result += '<div class="gallery__items">';
+                result += '<img id="' + items[ i ].id + '" src="' + items[ i ].src_small + '" alt="' + items[ i ].title + '">';
+                result += '</div>';
+            }
+            result += '</div>';
+
+            container.innerHTML = result;
+
+            showBigImg( document.querySelector( SELECTOR_BIG_DOT ) ); // Выводим первую фотографию
+            onClickImg(); // Отслеживаем нажатие на миниатюру
+        };
+
+        /**
+         * Вешаем обработчки события Click по миниатюре
+         */
+        function onClickImg () {
+            var galleryImgSmall = document.querySelectorAll( SELECTOR_SMALL_DOT );
+            for ( var i = 0; i < galleryImgSmall.length; i++ ) {
+                galleryImgSmall[ i ].onclick = function ( event ) {
+                    showBigImg( document.querySelector( SELECTOR_BIG_DOT ), event.target.id - 1 );
+                };
+            }
+        }
+
+        /**
+         * Выводим большую фотографию в указанный контейнер в DOM
+         *
+         * @param container - {Object} Контейнер, в котором нужно вывести фотографию
+         * @param idImg - {Number} Индекс фотографии в глобальном массиве items
+         */
+        function showBigImg ( container, idImg ) {
+            idImg = idImg || 0;
+
+            var item = items[ idImg ];
+            container.innerHTML = '<img src="' + item.src_big + '" alt="' + item.title + '">';
+
+            // пометить миниатюру
+            var smallImg = document.getElementById( items[ idImg ].id );
+            smallImg.parentNode.classList.add( SELECTOR_ITEM_ACTIVE );
+
+            if ( idActiveItem !== undefined && idActiveItem !== items[ idImg ].id ) {
+                var prevActiveImg = document.getElementById( idActiveItem );
+                prevActiveImg.parentNode.classList.remove( SELECTOR_ITEM_ACTIVE );
+            }
+
+            idActiveItem = items[ idImg ].id;
+        }
+    }
+
+    window.onload = function () {
+        var gallery = new Gallery();
+
+        if ( !gallery.setSource( './photo.json' ) ) return;
+        gallery.getData();
+        gallery.setContainer( 'gallery' );
+
+        setTimeout( function () {
+            gallery.showGallery();
+        }, 500 );
+    };
+
+</script>
+</body>
+</html>

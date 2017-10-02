@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="normalize.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Интернет-магазин</title>
+</head>
+<body>
+<div class="container">
+    <div class="header header--bg">
+        <div class="header__wrapper">
+            <div id="menu" class="menu">
+               <!-- <ul id="menu-top" class="menu-top clearfix">
+                    <li class="menu-top__items"><a class="menu-top__link" href="#">Главная</a></li>
+                    <li class="menu-top__items"><a class="menu-top__link" href="#">Каталог</a>
+                        <ul class="menu-top__submenu">
+                            <li class="menu-top__submenu-item"><a class="menu-top__submenu-link" href="#">Куртки</a>
+                            </li>
+                            <li class="menu-top__submenu-item"><a class="menu-top__submenu-link" href="#">Обувь</a></li>
+                            <li class="menu-top__submenu-item"><a class="menu-top__submenu-link" href="#">Брюки</a></li>
+                            <li class="menu-top__submenu-item"><a class="menu-top__submenu-link" href="#">Футболки</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-top__items"><a class="menu-top__link" href="#">Доставка</a></li>
+                    <li class="menu-top__items"><a class="menu-top__link" href="#">Оплата</a></li>
+                    <li class="menu-top__items"><a class="menu-top__link" href="#">Корзина</a></li>
+                    <li class="menu-top__items"><a class="menu-top__link" href="#">Контакты</a></li>
+                </ul>-->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+<script>
+    window.onload = function () {
+        const xhr = new XMLHttpRequest();
+        xhr.open( 'GET', './menu.json', true );
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+            /*
+            Стадии выполнения асинхронного запроса:
+                0 - запрос не инициализирован
+                1 - загрузка
+                2 - запрос принят
+                3 - обмен данными
+                4 - запрос выполнен
+            */
+
+            // Нам нужна стадия 4 - запрос выполнен
+            if ( xhr.readyState !== 4 ) return false;
+
+            // Если ответ не 200 значит ошибка
+            // Выводим код и описание ошибки
+            if ( xhr.status !== 200 ) {
+                console.log( 'Error:', xhr.status, xhr.statusText );
+            } else {
+                const jsonMenu = xhr.responseText;
+                const parseMenu = JSON.parse( jsonMenu );
+                const arMenu = [];
+
+                var createArraySubMenu = function ( arr ) {
+                    var arSubMenu = [];
+                    for ( var i = 0; i < arr.length; i++ ) {
+                        if ( arr[ i ].submenu === undefined ) {
+                            arSubMenu.push( new MenuItem( arr[ i ].href, arr[ i ].title, arr[ i ].classList, arr[ i ].classLink ) );
+                        } else {
+                            arSubMenu.push( new SubMenu( arr[ i ].href, arr[ i ].title, createArraySubMenu( arr[ i ].submenu ),
+                                arr.classMenu, arr.classList, arr.classLink) );
+                        }
+                    }
+                    return arSubMenu;
+                };
+
+                for ( var i = 0; i < parseMenu.length; i++ ) {
+                    if ( parseMenu[ i ].submenu === undefined ) {
+                        arMenu.push( new MenuItem( parseMenu[ i ].href, parseMenu[ i ].title,
+                            parseMenu[ i ].classList, parseMenu[ i ].classLink ) );
+                    } else {
+                        const arSubMenu = createArraySubMenu( parseMenu[ i ].submenu );
+                        arMenu.push( new SubMenu( parseMenu[ i ].href, parseMenu[ i ].title, arSubMenu, parseMenu[ i ].classMenu,
+                            parseMenu[ i ].classList, parseMenu[ i ].classLink ) );
+                    }
+                }
+
+                const menuTop = new Menu( 'menu-top', 'menu-top clearfix', arMenu );
+
+                document.getElementById( 'menu' ).innerHTML = menuTop.render();
+            }
+        };
+    };
+</script>
+</body>
+</html>

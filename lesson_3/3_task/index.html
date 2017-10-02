@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Задание №3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<form id="form" action="">
+    <div class="input-group">
+        <label for="name">Ваше имя</label>
+        <div id="error-name" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="name" name="name" placeholder="Ваше имя">
+    </div>
+    <div class="input-group">
+        <label for="phone">Телефон</label>
+        <div id="error-phone" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="phone" name="phone" placeholder="Телефон в формате +7(000)000-0000">
+    </div>
+    <div class="input-group">
+        <label for="email">Email</label>
+        <div id="error-email" class="error-msg error-msg--hidden"></div>
+        <input type="text" id="email" name="email" placeholder="Email">
+    </div>
+    <div class="input-group">
+        <label for="message">Сообщение</label>
+        <div id="error-message" class="error-msg error-msg--hidden"></div>
+        <textarea id="message" name="message" placeholder="Сообщение"></textarea>
+    </div>
+
+    <button type="button" id="submit">Отправить</button>
+</form>
+
+
+<script>
+    var button = document.getElementById( 'submit' ),
+        fieldValidation = {
+            'name': {
+                'validationRule': /^[a-zа-я]+$/i, // только буквы
+                'errorMsg': 'Имя должно содержать только буквы'
+            },
+            'phone': {
+                'validationRule': /^\+7\(\d{3}\)\d{3}-\d{4}$/, // +7(000)000-0000
+                'errorMsg': 'Укажите телефон в формате +7(000)000-0000'
+            },
+            'email': {
+                'validationRule': /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i, // только email
+                'errorMsg': 'Вы уверены, что указали email?'
+            },
+            'message': {
+                'validationRule': /.+/, // любой текст
+                'errorMsg': 'Напишите что-нибудь'
+            }
+        };
+
+    button.onclick = function () {
+        for ( var key in fieldValidation ) {
+            var field = document.getElementById( key ),
+                errorBox = document.getElementById( 'error-' + key ),
+                errorMsg = fieldValidation[ key ].errorMsg,
+                isFieldValid = fieldValidation[ key ].validationRule.test( field.value );
+
+            if ( field.value.length === 0 ) {
+                errorMsg = "Обязательное поле";
+            }
+
+            if ( !isFieldValid ) {
+                field.classList.add( 'error-field' );
+                field.classList.remove( 'success-field' );
+                errorBox.classList.remove( 'error-msg--hidden' );
+                errorBox.innerHTML = errorMsg;
+            } else {
+                field.classList.remove( 'error-field' );
+                field.classList.add( 'success-field' );
+                errorBox.classList.add( 'error-msg--hidden' );
+                errorBox.innerHTML = '';
+            }
+        }
+    }
+</script>
+</body>
+</html>

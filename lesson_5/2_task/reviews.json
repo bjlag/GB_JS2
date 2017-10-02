@@ -1,0 +1,19 @@
+{
+    "comments": [
+        {
+            "id_comment": 1,
+            "approved": true,
+            "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aut error nostrum odio repellendus saepe, similique? Aut beatae corporis dolor doloremque, est excepturi fugit illo magni non, porro, repellendus rerum!"
+        },
+        {
+            "id_comment": 2,
+            "approved": false,
+            "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aut error nostrum odio repellendus saepe, similique?"
+        },
+        {
+            "id_comment": 3,
+            "approved": true,
+            "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aut error nostrum odio repellendus saepe, similique? Aut beatae corporis dolor doloremque, est excepturi fugit illo magni non, porro, repellendus rerum! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquam architecto cum cumque cupiditate distinctio in labore molestiae natus nihil optio quae quam quis quisquam quo rem tempore, unde voluptates?"
+        }
+    ]
+}

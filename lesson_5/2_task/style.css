@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    color: #090707;
+}
+
+textarea:focus {
+    outline: none;
+    border: 1px solid #179dd6;
+}
+
+textarea {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    box-sizing: border-box;
+    height: 100px;
+    resize: none;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.container {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header__section {
+    font-size: 25px;
+    font-weight: 400;
+    color: #179dd6;
+    margin-bottom: 20px;
+}
+
+.form-review {
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.review-item {
+    background-color: #f8fafb;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.review-item--approved {
+    background-color: #cdf9cd;
+}
+
+.review-item__title {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.review-item__button {
+    margin-top: 10px;
+}
+
+.review-item__button button{
+    margin-right: 5px;
+}
+
+.error {
+    border: 1px solid #cb293c;
+}
+
+.btn {
+    outline: none;
+    padding: 5px 10px;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.btn--with-full {
+    width: 100%;
+}
+
+.btn__add {
+    background-color: #179dd6;
+}
+
+.btn__add:hover {
+    opacity: .9;
+}
+
+.btn__approved {
+    background-color: #139213;
+}
+
+.btn__approved:hover {
+    opacity: .9;
+}
+
+.btn__remove {
+    background-color: #ccc;
+}
+
+.btn__remove:hover {
+    opacity: .9;
+}
+
+.clearfix:after,
+.clearfix:before {
+    display: table;
+    content: ' '
+}
+
+.clearfix:after {
+    clear: both
+}

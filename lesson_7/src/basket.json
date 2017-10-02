@@ -1,0 +1,19 @@
+{
+    "result": 1,
+    "basket":
+    [
+        {
+            "id_product": 1,
+            "price": 1560
+        },
+        {
+            "id_product": 3,
+            "price": 670
+        },
+        {
+            "id_product": 5,
+            "price": 700
+        }
+    ],
+    "amount": 2930
+}

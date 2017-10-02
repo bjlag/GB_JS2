@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Задание №2</title>
+    <style>
+        #text {
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        #button {
+            border: none;
+            background-color: #e5e5e5;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        #button:hover {
+            background-color: #ccc;
+        }
+
+        #button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+<div id="text">
+    <p>
+        <b>Пример на Английском:</b><br>
+        'You're new here, aren't you?'
+    </p>
+    <p>
+        <b>Перевод:</b><br>
+        'Ты здесь новичок, правильно?'
+    </p>
+</div>
+<button id="button">Заменить ' на "</button>
+
+<script>
+    var button = document.getElementById( 'button' ),
+        text = document.getElementById( 'text' ),
+        regExp = /('\s|\s')/g,
+        replaceValue = '"';
+
+    button.onclick = function () {
+        text.innerHTML = text.innerHTML.replace( regExp, replaceValue );
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Меню (ES5)</title>
+</head>
+<body>
+<div id="menu"></div>
+<script src="script.js"></script>
+<script>
+    /**
+     * Выводим меню
+     */
+    window.onload = function () {
+        const xhr = new XMLHttpRequest();
+        xhr.open( 'GET', './menu.json', true );
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+            /*
+            Стадии выполнения асинхронного запроса:
+                0 - запрос не инициализирован
+                1 - загрузка
+                2 - запрос принят
+                3 - обмен данными
+                4 - запрос выполнен
+            */
+
+            // Нам нужна стадия 4 - запрос выполнен
+            if ( xhr.readyState !== 4 ) return false;
+
+            // Если ответ не 200 значит ошибка
+            // Выводим код и описание ошибки
+            if ( xhr.status !== 200 ) {
+                console.log( 'Error:', xhr.status, xhr.statusText );
+            } else {
+                const jsonMenu = xhr.responseText;
+                const parseMenu = JSON.parse( jsonMenu );
+                const arMenu = [];
+
+                var createArraySubMenu = function ( arr ) {
+                    var arSubMenu = [];
+                    for ( var i = 0; i < arr.length; i++ ) {
+                        if ( arr[ i ].submenu === undefined ) {
+                            arSubMenu.push( new MenuItem( arr[ i ].href, arr[ i ].title ) );
+                        } else {
+                            arSubMenu.push( new SubMenu( arr[ i ].href, arr[ i ].title, createArraySubMenu( arr[ i ].submenu ) ) );
+                        }
+                    }
+                    return arSubMenu;
+                };
+
+                for ( var i = 0; i < parseMenu.length; i++ ) {
+                    if ( parseMenu[ i ].submenu === undefined ) {
+                        arMenu.push( new MenuItem( parseMenu[ i ].href, parseMenu[ i ].title ) );
+                    } else {
+                        const arSubMenu = createArraySubMenu( parseMenu[ i ].submenu );
+                        arMenu.push( new SubMenu( parseMenu[ i ].href, parseMenu[ i ].title, arSubMenu ) );
+                    }
+                }
+
+                const menuTop = new Menu( 'menu__top', 'menu__top', arMenu );
+
+                document.getElementById( 'menu' ).innerHTML = menuTop.render();
+            }
+        };
+    };
+</script>
+</body>
+</html>

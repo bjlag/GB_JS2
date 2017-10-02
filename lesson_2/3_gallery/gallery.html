@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Галерея</title>
+</head>
+<body>
+<div id="gallery" class="gallery">
+</div>
+
+<script>
+    'use strict';
+
+    /**
+     * Класс отвечающий за работу с галереей
+     *
+     * @param items - массив элементов галереи
+     * @constructor
+     */
+    function Gallery( items ) {
+        this.items = items;
+    }
+
+    /**
+     * Формирует HTML код галереи
+     *
+     * @returns {string} HTML код галереи
+     */
+    Gallery.prototype.render = function () {
+        var result = '<div class="gallery__big"></div>';
+
+        result += '<div class="gallery__item-wrapper clearfix">';
+
+        for ( var i = 0; i < this.items.length; i++ ) {
+            result += '<div class="gallery__items">';
+            result += '<img id="' + this.items[ i ].id + '" src="' + this.items[ i ].src_small + '" alt="' + this.items[ i ].title + '">'
+            result += '</div>';
+        }
+
+        result += '</div>';
+
+        return result;
+    };
+
+    /**
+     * Выводит большую фотографию
+     *
+     * @param container - DOM узел, в котором нужно вывести фотографию
+     * @param idImg - ID фотографии, которой нужно вывести большую фотографию
+     */
+    Gallery.prototype.showBigImg = function ( container, idImg ) {
+        idImg = idImg || 0;
+
+        var item = this.items[ idImg ];
+        container.innerHTML = '<img src="' + item.src_big + '" alt="' + item.title + '">';
+
+        // пометить миниатюру
+        var smallImg = document.getElementById( this.items[ idImg ].id );
+        smallImg.parentNode.classList.add( 'gallery__items--active' );
+
+        if ( this.idActiveItem !== undefined && this.idActiveItem !== this.items[ idImg ].id ) {
+            var prevActiveImg = document.getElementById( this.idActiveItem );
+            prevActiveImg.parentNode.classList.remove( 'gallery__items--active' );
+        }
+
+        this.idActiveItem = this.items[ idImg ].id;
+    };
+
+
+    window.onload = function () {
+
+        var url = './photo.json',
+            method = 'GET';
+
+        // получаем данные
+        var xhr = new XMLHttpRequest();
+        xhr.open( method, url, true );
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+            if ( xhr.readyState !== 4 ) return false;
+
+            if ( xhr.status !== 200 ) {
+                console.log( 'Error:', xhr.status, xhr.statusText );
+            } else {
+                var arJson = JSON.parse( xhr.responseText );
+                var arItems = [];
+
+                for ( var i = 0; i < arJson.length; i++ ) {
+                    arItems.push( arJson[ i ] );
+                }
+
+                // выводим галерею
+                var gallery = new Gallery( arItems );
+                arItems = null;
+
+                var containerGallery = document.getElementById( 'gallery' );
+                containerGallery.innerHTML = gallery.render();
+
+                // вешаем событие на клик по изображению small
+                var galleryImgSmall = document.querySelectorAll( '.gallery__items img' );
+                var containerBigImg = document.querySelector( '.gallery__big' );
+
+                gallery.showBigImg( containerBigImg );
+
+                for ( var i = 0; i < galleryImgSmall.length; i++ ) {
+                    galleryImgSmall[ i ].onclick = function ( event ) {
+                        gallery.showBigImg( containerBigImg, event.target.id - 1 );
+                    };
+                }
+            }
+        };
+    };
+
+</script>
+</body>
+</html>
