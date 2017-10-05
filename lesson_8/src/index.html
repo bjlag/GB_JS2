@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Автоматизация</title>
+    <!-- build:css css/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../lib/normalize-css/normalize.css" />
+    <!-- endbower -->
+    <link rel="stylesheet" href="../lib/jquery-ui/themes/base/all.css">
+    <link rel="stylesheet" href="../lib/jquery-ui/themes/base/jquery-ui.min.css">
+    <!-- endbuild -->
+    <!-- build:css css/main.css -->
+    <link rel="stylesheet" href="css/fontello.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- endbuild -->
+</head>
+<body>
+<div class="container clearfix">
+    <div class="side-right">
+        <div id="basket" class="basket"></div>
+        <div class="product-hit">
+            <div class="product-hit__title">
+                Популярные товары
+            </div>
+            <div id="product-hit__slider" class="product-hit__slider">
+                <div class="product-hit__slider-wrapper"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <h2 class="header__section">Каталог</h2>
+    <div class="products-list">
+        <div class="product-item">
+            <div class="product-item__title">
+                Товар 1
+            </div>
+            <div class="product-item__price">
+                1560 руб
+            </div>
+            <div class="product-item__button">
+                <button data-prod-id="1" class="btn btn__buy btn--with-full">Купить</button>
+                <button data-prod-id="1" class="btn btn__remove btn--with-full">Удалить</button>
+            </div>
+        </div>
+        <div class="product-item">
+            <div class="product-item__title">
+                Товар 2
+            </div>
+            <div class="product-item__price">
+                2560 руб
+            </div>
+            <div class="product-item__button">
+                <button data-prod-id="2" class="btn btn__buy btn--with-full">Купить</button>
+                <button data-prod-id="2" class="btn btn__remove btn--with-full">Удалить</button>
+            </div>
+        </div>
+        <div class="product-item">
+            <div class="product-item__title">
+                Товар 3
+            </div>
+            <div class="product-item__price">
+                670 руб
+            </div>
+            <div class="product-item__button">
+                <button data-prod-id="3" class="btn btn__buy btn--with-full">Купить</button>
+                <button data-prod-id="3" class="btn btn__remove btn--with-full">Удалить</button>
+            </div>
+        </div>
+        <div class="product-item">
+            <div class="product-item__title">
+                Товар 4
+            </div>
+            <div class="product-item__price">
+                6700 руб
+            </div>
+            <div class="product-item__button">
+                <button data-prod-id="4" class="btn btn__buy btn--with-full">Купить</button>
+                <button data-prod-id="4" class="btn btn__remove btn--with-full">Удалить</button>
+            </div>
+        </div>
+        <div class="product-item">
+            <div class="product-item__title">
+                Товар 5
+            </div>
+            <div class="product-item__price">
+                700 руб
+            </div>
+            <div class="product-item__button">
+                <button data-prod-id="5" class="btn btn__buy btn--with-full">Купить</button>
+                <button data-prod-id="5" class="btn btn__remove btn--with-full">Удалить</button>
+            </div>
+        </div>
+        <div class="product-item">
+            <div class="product-item__title">
+                Товар 6
+            </div>
+            <div class="product-item__price">
+                6000 руб
+            </div>
+            <div class="product-item__button">
+                <button data-prod-id="6" class="btn btn__buy btn--with-full">Купить</button>
+                <button data-prod-id="6" class="btn btn__remove btn--with-full">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- build:js js/vendor.js -->
+<!-- bower:js -->
+<script src="../lib/jquery/dist/jquery.js"></script>
+<script src="../lib/jquery-ui/jquery-ui.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+<!-- build:js js/main.js -->
+<script src="js/Container.js"></script>
+<script src="js/Basket.js"></script>
+<script src="js/Slider.js"></script>
+<script src="js/main.js"></script>
+<!-- endbuild -->
+</body>
+</html>
